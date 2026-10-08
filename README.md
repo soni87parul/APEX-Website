@@ -126,3 +126,15 @@ Production deployment will occur only after design, content and functional appro
 ## Project Status
 
 Initial development and design implementation.
+
+## Local development
+
+```
+npm install
+npm run dev      # local dev server
+npm run build    # static build in dist/
+```
+
+Requires Node 20 or later. `npm run lint` checks the code and `npm run format` tidies it.
+
+The approved plan (structure, design system, sections, sequence) is in [docs/PLAN.md](docs/PLAN.md). All site copy lives in `src/content/site.ts`, so wording can change without touching components.
