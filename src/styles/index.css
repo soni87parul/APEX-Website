@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* APEX tokens (RGB triplets). Palette approved provisionally: charcoal,
+   warm amber, sage and cream. */
+:root {
+  --charcoal: 22 25 27;       /* #16191B primary dark ground */
+  --raised: 34 39 42;         /* #22272A cards, drawers, overlays on dark */
+  --cream: 242 236 224;       /* #F2ECE0 light sections, text on dark */
+  --creamsoft: 250 246 238;   /* #FAF6EE lightest surface */
+  --amber: 217 154 61;        /* #D99A3D primary accent */
+  --sage: 143 165 138;        /* #8FA58A secondary accent */
+  --stone: 138 142 138;       /* #8A8E8A muted text */
+  --hairline: 221 213 198;    /* #DDD5C6 rules on light grounds */
+
+  /* Technology pathways reuse the palette so they read as one system */
+  --cellular: var(--amber);
+  --fermentation: var(--cream);
+  --plant: var(--sage);
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-charcoal font-sans text-cream antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--amber));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .label {
+    @apply font-mono text-[0.6875rem] uppercase tracking-label;
+  }
+  .container-site {
+    @apply mx-auto w-full max-w-site px-4 sm:px-6 lg:px-10;
+  }
+}
