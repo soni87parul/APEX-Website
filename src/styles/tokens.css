@@ -1,0 +1,80 @@
+/* APEX design tokens. Tune colours here, not in components. */
+:root {
+  /* Palette (spec §2) */
+  --deep: #10231d;
+  --forest: #193b30;
+  --charcoal: #151b19;
+  --charcoal-raised: #1d2522;
+  --ivory: #f5f2ea;
+  --white: #fffdf8;
+  --amber: #d9a35a;
+  --amber-strong: #c98d3e;
+  --sage: #a9bba9;
+  --sage-pale: #e6ebe2;
+  --text: #20302a;
+  --text-muted: #55625c;
+
+  /* Text on dark */
+  --on-dark: #f5f2ea;
+  --on-dark-muted: rgba(245, 242, 234, 0.74);
+  --on-dark-faint: rgba(245, 242, 234, 0.52);
+  --line-dark: rgba(245, 242, 234, 0.14);
+  --line-dark-strong: rgba(245, 242, 234, 0.26);
+  --line-light: rgba(32, 48, 42, 0.16);
+
+  /* Pathway colours: card edge, connector and module chips */
+  --pw-cellular: #d9a35a;
+  --pw-fermentation: #a9bba9;
+  --pw-plant: #e9e2cf;
+
+  /* Status colours */
+  --status-foundation: #a9bba9;
+  --status-partner: #a9bba9;
+  --status-development: #d9a35a;
+
+  /* Type */
+  --font-head: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --font-body: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --fs-hero: clamp(2.6rem, 1.35rem + 5.1vw, 6rem);
+  --fs-h2: clamp(2rem, 1.25rem + 2.8vw, 3.6rem);
+  --fs-h3: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  --fs-lede: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --fs-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
+  --fs-small: 0.875rem;
+  --fs-label: 0.75rem;
+
+  /* Layout */
+  --max: 1320px;
+  --gutter: 20px;
+  --header-h: 72px;
+  --section-y: clamp(80px, 5rem + 4vw, 148px);
+  --radius: 2px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 200ms;
+  --t-med: 300ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 40px;
+    --header-h: 84px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --gutter: 64px;
+    --header-h: 92px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 0ms;
+    --t-med: 0ms;
+  }
+}
