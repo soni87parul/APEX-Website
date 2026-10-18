@@ -9,9 +9,26 @@ test.describe('homepage', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText(
       'From protein innovation to',
     );
-    for (const id of ['pathways', 'capabilities', 'inside', 'who', 'work-with-apex', 'ecosystem']) {
+    for (const id of [
+      'platform',
+      'pathways',
+      'capabilities',
+      'inside',
+      'who',
+      'ecosystem',
+      'work-with-apex',
+    ]) {
       await expect(page.locator(`#${id}`)).toHaveCount(1);
     }
+    // No connector graphics remain, and each homepage photo is used once.
+    await expect(page.locator('.pathways__connectors')).toHaveCount(0);
+    const photoIds = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('main img'))
+        .map((img) => (img as HTMLImageElement).getAttribute('src') ?? '')
+        .filter((src) => src.includes('/images/photos/'))
+        .map((src) => src.replace(/-(?:mobile-)?\d+\.\w+$/, '')),
+    );
+    expect(new Set(photoIds).size).toBe(photoIds.length);
     expect(errors).toEqual([]);
   });
 
@@ -54,25 +71,21 @@ test.describe('homepage', () => {
   });
 });
 
-test('selecting a pathway changes the highlighted foundation modules', async ({ page }) => {
-  await page.goto('/#pathways');
-  const lit = page.locator('.foundation__modules li.is-lit');
-  await expect(lit).toHaveCount(6);
-  const isMobile = (page.viewportSize()?.width ?? 0) < 1024;
-  if (isMobile)
-    await page.locator('.pathways__switch-btn', { hasText: 'Precision fermentation' }).click();
-  else
-    await page.getByRole('button', { name: 'Precision fermentation', exact: true }).last().click();
-  await expect(lit).toHaveCount(5);
-  await expect(page.locator('.foundation__head p')).toContainText('precision fermentation');
+test('a pathway panel opens its Inside APEX tab', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('.pw-panel__link', { hasText: 'Fermentation' }).click();
+  await expect(page.getByRole('tab', { name: 'Fermentation' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
 });
 
 test('platform tabs work with the keyboard', async ({ page }) => {
   await page.goto('/#inside');
-  const first = page.getByRole('tab', { name: /Cultivated meat/ });
+  const first = page.getByRole('tab', { name: 'Cultivated' });
   await first.focus();
   await page.keyboard.press('ArrowRight');
-  const second = page.getByRole('tab', { name: /Precision fermentation/ });
+  const second = page.getByRole('tab', { name: 'Fermentation' });
   await expect(second).toBeFocused();
   await expect(second).toHaveAttribute('aria-selected', 'true');
   await expect(page.getByRole('tabpanel')).toHaveCount(1);
@@ -81,14 +94,17 @@ test('platform tabs work with the keyboard', async ({ page }) => {
   await expect(page.getByRole('tabpanel')).toContainText('not by APEX');
 });
 
-test('capability modules swap the image panel', async ({ page }) => {
+test('capability groups expand to the full service detail', async ({ page }) => {
   await page.goto('/#capabilities');
-  await page.getByRole('button', { name: /Pilot-production support/ }).click();
-  await expect(page.locator('.cap-panel__caption')).toContainText('Module 04');
-  await expect(page.getByRole('button', { name: /Pilot-production support/ })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
+  const toggle = page.locator('button[aria-controls="cap-detail-scale"]');
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(
+    page.getByText('This is pilot-scale support, not commercial manufacturing.'),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Scale-up and manufacturing readiness' }),
+  ).toBeVisible();
 });
 
 test.describe('enquiry', () => {
@@ -177,4 +193,58 @@ test('work-with-apex route renders the enquiry as the page heading', async ({ pa
     'Build your alternative-protein programme',
   );
   await expect(page).toHaveTitle(/Work With APEX/);
+});
+
+test.describe('events page', () => {
+  test('renders hero, gallery, next strip, media and ecosystem', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+    await page.goto('/events/');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page).toHaveTitle(/Events/);
+    for (const name of ['Photos and video', 'Media and insights']) {
+      await expect(page.getByRole('heading', { level: 2, name })).toBeVisible();
+    }
+    await expect(page.locator('.ev-next')).toHaveCount(1);
+    await expect(page.locator('.ecosystem--compact')).toHaveCount(1);
+    // Sample media cards are not links.
+    await expect(page.locator('.ev-media__card a')).toHaveCount(0);
+    expect(errors).toEqual([]);
+  });
+
+  test('gallery albums filter and the lightbox works with the keyboard', async ({ page }) => {
+    await page.goto('/events/');
+    const items = page.locator('.ev-gallery__item');
+    await expect(items).toHaveCount(12);
+    await page.getByRole('button', { name: 'Workshops and site visits' }).click();
+    await expect(items).toHaveCount(4);
+    await page.getByRole('button', { name: 'All', exact: true }).click();
+    const first = items.first().getByRole('button');
+    await first.click();
+    const dialog = page.getByRole('dialog', { name: 'Photo viewer' });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText('1 / 12');
+    await page.keyboard.press('ArrowRight');
+    await expect(dialog).toContainText('2 / 12');
+    await page.keyboard.press('ArrowLeft');
+    await page.keyboard.press('ArrowLeft');
+    await expect(dialog).toContainText('12 / 12');
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(first).toBeFocused();
+  });
+
+  test('has no serious accessibility violations', async ({ page }) => {
+    await page.goto('/events/');
+    await page.waitForTimeout(600);
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    const serious = results.violations.filter(
+      (v) => v.impact === 'serious' || v.impact === 'critical',
+    );
+    expect(
+      serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
+    ).toEqual([]);
+  });
 });

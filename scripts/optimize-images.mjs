@@ -1,5 +1,6 @@
 // Generates responsive, optimised images in public/images from the originals in assets-src.
 // Run with `npm run images` whenever an original changes. Outputs are committed.
+// ClearMeat variants come from scripts/brand-variants.mjs (npm run brand).
 import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -51,7 +52,6 @@ const logos = [
   { id: 'apex-logo-on-light', src: 'brand/apex-logo-on-light.png', width: 520 },
   { id: 'niftem-kundli-white', src: 'brand/niftem-kundli-white.png', width: 400 },
   { id: 'niftem-kundli-green', src: 'brand/niftem-kundli-green.png', width: 400 },
-  { id: 'clearmeat-logo', src: 'brand/clearmeat-logo.png', width: 172 },
 ];
 
 await mkdir(path.join(OUT, 'photos'), { recursive: true });

@@ -3,6 +3,7 @@ import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
 import { WorkWithApex } from './pages/WorkWithApex';
+import { Events } from './pages/Events';
 import { NotFound } from './pages/NotFound';
 import { EnquiryProvider } from './lib/enquiry-context';
 import { applySeo } from './lib/seo';
@@ -11,6 +12,7 @@ import { useReveal } from './hooks/useReveal';
 const routes: Record<string, () => JSX.Element> = {
   '/': Home,
   '/work-with-apex': WorkWithApex,
+  '/events': Events,
 };
 
 export function App() {
@@ -25,7 +27,7 @@ export function App() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <Header solidAlways={path !== '/'} />
+      <Header solidAlways={path !== '/' && path !== '/events'} />
       <main id="main" tabIndex={-1}>
         <Page />
       </main>

@@ -1,45 +1,45 @@
 /* APEX design tokens. Tune colours here, not in components. */
 :root {
-  /* Palette (spec §2) */
-  --deep: #10231d;
-  --forest: #193b30;
-  --charcoal: #151b19;
-  --charcoal-raised: #1d2522;
-  --ivory: #f5f2ea;
-  --white: #fffdf8;
-  --amber: #d9a35a;
-  --amber-strong: #c98d3e;
-  --sage: #a9bba9;
-  --sage-pale: #e6ebe2;
-  --text: #20302a;
-  --text-muted: #55625c;
+  /* Palette (redesign spec 4.1): deep teal, forest, warm ivory, sage, restrained champagne, near-black ink */
+  --deep: #102b28;
+  --forest: #2f6255;
+  --charcoal: #0c211f;
+  --charcoal-raised: #163532;
+  --ivory: #f4f1e9;
+  --white: #fbfaf6;
+  --amber: #c6a06c;
+  --amber-strong: #b48a52;
+  --sage: #a7c0b2;
+  --sage-pale: #dce7df;
+  --text: #182723;
+  --text-muted: #4c5b56;
 
   /* Text on dark */
-  --on-dark: #f5f2ea;
-  --on-dark-muted: rgba(245, 242, 234, 0.74);
-  --on-dark-faint: rgba(245, 242, 234, 0.52);
-  --line-dark: rgba(245, 242, 234, 0.14);
-  --line-dark-strong: rgba(245, 242, 234, 0.26);
-  --line-light: rgba(32, 48, 42, 0.16);
+  --on-dark: #f4f1e9;
+  --on-dark-muted: rgba(244, 241, 233, 0.78);
+  --on-dark-faint: rgba(244, 241, 233, 0.6);
+  --line-dark: rgba(244, 241, 233, 0.14);
+  --line-dark-strong: rgba(244, 241, 233, 0.28);
+  --line-light: rgba(24, 39, 35, 0.14);
 
   /* Pathway colours: card edge, connector and module chips */
-  --pw-cellular: #d9a35a;
-  --pw-fermentation: #a9bba9;
-  --pw-plant: #e9e2cf;
+  --pw-cellular: #c6a06c;
+  --pw-fermentation: #a7c0b2;
+  --pw-plant: #e3dcc8;
 
   /* Status colours */
-  --status-foundation: #a9bba9;
-  --status-partner: #a9bba9;
-  --status-development: #d9a35a;
+  --status-foundation: #a7c0b2;
+  --status-partner: #a7c0b2;
+  --status-development: #c6a06c;
 
   /* Type */
   --font-head: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
   --font-body: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  --fs-hero: clamp(2.6rem, 1.35rem + 5.1vw, 6rem);
-  --fs-h2: clamp(2rem, 1.25rem + 2.8vw, 3.6rem);
-  --fs-h3: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  --fs-hero: clamp(2.35rem, 1.5rem + 3.3vw, 4.4rem);
+  --fs-h2: clamp(1.85rem, 1.35rem + 1.7vw, 2.85rem);
+  --fs-h3: clamp(1.3rem, 1.15rem + 0.55vw, 1.7rem);
   --fs-lede: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --fs-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
   --fs-small: 0.875rem;
@@ -49,8 +49,8 @@
   --max: 1320px;
   --gutter: 20px;
   --header-h: 72px;
-  --section-y: clamp(80px, 5rem + 4vw, 148px);
-  --radius: 2px;
+  --section-y: clamp(64px, 3.5rem + 3vw, 120px);
+  --radius: 6px;
 
   /* Motion */
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);

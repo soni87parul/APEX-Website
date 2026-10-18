@@ -1,6 +1,5 @@
 import { ArrowRight } from 'lucide-react';
 import { hero } from '../../content/site';
-import { Logo } from '../ui/Logo';
 
 export function Hero() {
   return (
@@ -22,12 +21,12 @@ export function Hero() {
           <source
             type="image/avif"
             srcSet="/images/photos/researcher-cabinet-960.avif 960w, /images/photos/researcher-cabinet-1280.avif 1280w"
-            sizes="(min-width: 768px) 70vw, 100vw"
+            sizes="100vw"
           />
           <source
             type="image/webp"
             srcSet="/images/photos/researcher-cabinet-960.webp 960w, /images/photos/researcher-cabinet-1280.webp 1280w"
-            sizes="(min-width: 768px) 70vw, 100vw"
+            sizes="100vw"
           />
           <img
             src="/images/photos/researcher-cabinet-1280.jpg"
@@ -42,7 +41,7 @@ export function Hero() {
       </div>
 
       <div className="wrap hero__content">
-        <p className="eyebrow eyebrow--rule hero__anim" style={{ ['--d' as string]: '0ms' }}>
+        <p className="eyebrow hero__anim" style={{ ['--d' as string]: '0ms' }}>
           {hero.eyebrow}
         </p>
         <h1
@@ -68,26 +67,10 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="hero__band">
-        <div className="wrap hero__band-inner">
-          <ul className="hero__ticker" aria-label="Technology pathways">
-            {hero.ticker.map((t) => (
-              <li key={t.no}>
-                <span className="mono-label">
-                  {t.no} · {t.label}
-                </span>
-                <span>{t.text}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="hero__institution" data-claim="requires-approval">
-            <div>
-              <span className="mono-label mono-label--muted">{hero.institutional.label}</span>
-              <Logo name="niftem-white" className="hero__niftem" />
-            </div>
-            <p>{hero.institutional.text}</p>
-          </div>
-        </div>
+      <div className="wrap hero__foot hero__anim" style={{ ['--d' as string]: '340ms' }}>
+        <p className="hero__institution" data-claim="requires-approval">
+          {hero.institutional.text}
+        </p>
       </div>
     </section>
   );

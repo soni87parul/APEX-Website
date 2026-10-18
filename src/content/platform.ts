@@ -10,9 +10,8 @@ export type PlatformTab = {
   facts: { label: string; value: string }[];
   /** Draft status badges. REQUIRES APPROVAL. */
   statuses: { status: Status; label: string }[];
-  media:
-    | { kind: 'photos'; images: { image: string; caption: string; alt: string }[] }
-    | { kind: 'diagram'; diagram: 'bioreactor' | 'extrusion' | 'regulatory' };
+  /** Optional explanatory schematic, shown behind a disclosure and labelled as illustrative. */
+  diagram?: 'bioreactor' | 'extrusion' | 'regulatory';
   cta: { label: string; objective: ObjectiveId };
   note?: string;
 };
@@ -21,7 +20,7 @@ export const platformTabs: PlatformTab[] = [
   {
     id: 'cellular',
     no: '01',
-    tab: 'Cultivated meat',
+    tab: 'Cultivated',
     area: 'Area 01 · Cellular agriculture',
     title: 'Cultivated meat research',
     text: "Aseptic laboratory capability for cultivated meat and cell-based protein research, built on ClearMeat's experience in cell culture and growth media.",
@@ -45,32 +44,12 @@ export const platformTabs: PlatformTab[] = [
       { status: 'foundation', label: 'Current research foundation' },
       { status: 'development', label: 'Scale-up: in development' },
     ],
-    media: {
-      kind: 'photos',
-      images: [
-        {
-          image: 'researcher-cabinet',
-          caption: 'ClearMeat laboratory',
-          alt: 'A researcher pipetting into a multi-well plate inside a biosafety cabinet',
-        },
-        {
-          image: 'media-preparation',
-          caption: 'Growth-media preparation',
-          alt: 'Red growth medium being vacuum-filtered into glass bottles',
-        },
-        {
-          image: 'cell-culture-plate',
-          caption: 'Cell culture',
-          alt: 'A 12-well cell-culture plate with pink growth medium and handwritten labels',
-        },
-      ],
-    },
     cta: { label: 'Discuss cultivated-meat research', objective: 'rnd' },
   },
   {
     id: 'fermentation',
     no: '02',
-    tab: 'Precision fermentation',
+    tab: 'Fermentation',
     area: 'Area 02 · Fermentation',
     title: 'Precision fermentation and bioprocess',
     text: 'Process development for microbial biomass and precision-fermented proteins, from strain screening to pilot-ready parameters.',
@@ -94,14 +73,14 @@ export const platformTabs: PlatformTab[] = [
       { status: 'foundation', label: 'Current research foundation' },
       { status: 'partner', label: 'Pilot: partner-supported' },
     ],
-    media: { kind: 'diagram', diagram: 'bioreactor' },
+    diagram: 'bioreactor',
     cta: { label: 'Discuss a fermentation project', objective: 'rnd' },
     note: 'Schematic diagram for explanation. It does not depict APEX equipment.',
   },
   {
     id: 'plant',
     no: '03',
-    tab: 'Plant protein',
+    tab: 'Plant-based',
     area: 'Area 03 · Plant-based',
     title: 'Plant protein formulation and processing',
     text: 'Characterisation, formulation and processing trials for plant-based foods built on Indian crops and ingredients.',
@@ -122,14 +101,14 @@ export const platformTabs: PlatformTab[] = [
       { status: 'foundation', label: 'Current research foundation' },
       { status: 'partner', label: 'Texturisation: partner-supported' },
     ],
-    media: { kind: 'diagram', diagram: 'extrusion' },
+    diagram: 'extrusion',
     cta: { label: 'Discuss a plant-protein project', objective: 'rnd' },
     note: 'Process diagram for explanation. It does not depict APEX equipment.',
   },
   {
     id: 'regulatory',
     no: '04',
-    tab: 'Regulatory guidance and market entry',
+    tab: 'Regulatory and India entry',
     area: 'Area 04 · All pathways',
     title: 'Regulatory guidance and market-entry support',
     text: 'Practical guidance on the Indian regulatory route for novel foods and ingredients, and on entering the Indian market.',
@@ -147,7 +126,7 @@ export const platformTabs: PlatformTab[] = [
       { label: 'Approvals', value: 'Issued by the relevant authority, not by APEX' },
     ],
     statuses: [{ status: 'partner', label: 'Partner-supported' }],
-    media: { kind: 'diagram', diagram: 'regulatory' },
+    diagram: 'regulatory',
     cta: { label: 'Explore India entry', objective: 'india-entry' },
     note: 'APEX provides guidance and coordination; regulatory approvals are issued by the relevant authority, not APEX.',
   },
@@ -179,4 +158,30 @@ export const regulatoryFlow = [
     title: 'Applicant submission',
     text: 'You submit to the regulator. The authority decides.',
   },
+];
+
+/** Inside APEX mosaic. Authentic ClearMeat photographs only; each is used once on the homepage. */
+export const insidePhotos: { image: string; caption: string; alt: string; position?: string }[] = [
+  {
+    image: 'research-team',
+    caption: 'ClearMeat research team',
+    alt: 'ClearMeat researchers in lab coats working together at a laboratory bench',
+    position: '50% 62%',
+  },
+  {
+    image: 'media-preparation',
+    caption: 'Growth-media preparation',
+    alt: 'Red growth medium being vacuum-filtered into glass bottles inside a biosafety cabinet',
+  },
+];
+
+/** REQUIRES APPROVAL: each highlight must be confirmed by APEX before publication. */
+export const insideHighlights = [
+  {
+    title: 'Aseptic cell-culture laboratory',
+    text: 'Biosafety cabinets and cell-culture work at ClearMeat.',
+  },
+  { title: 'Growth-media development', text: 'In-house media work, including the ClearX9 range.' },
+  { title: 'Institutional partnership', text: 'Research collaboration with NIFTEM-Kundli.' },
+  { title: 'Equipment per project', text: 'Specific equipment is confirmed for each enquiry.' },
 ];

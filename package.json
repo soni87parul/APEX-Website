@@ -12,7 +12,9 @@
     "format": "prettier --write src",
     "images": "node scripts/optimize-images.mjs",
     "test:e2e": "playwright test",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "brand": "node scripts/brand-variants.mjs",
+    "placeholders": "node scripts/placeholders.mjs"
   },
   "engines": {
     "node": ">=20"

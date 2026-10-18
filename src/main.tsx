@@ -5,6 +5,7 @@ import '@fontsource-variable/dm-sans/wght.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import './styles/tokens.css';
 import './styles/global.css';
+import './styles/sections.css';
 import { App } from './App';
 
 const root = document.documentElement;

@@ -1,19 +1,17 @@
 import { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
-import { capabilities, clearx9 } from '../../content/capabilities';
+import { ArrowRight, Plus } from 'lucide-react';
+import { capabilities, capabilityGroups, clearx9 } from '../../content/capabilities';
+import { statusLabels } from '../../content/pathways';
 import { sections } from '../../content/site';
 import { SectionHeading } from '../layout/SectionHeading';
-import { RegulatoryFlow } from '../graphics/RegulatoryFlow';
-import { ScaleDiagram } from '../graphics/ScaleDiagram';
 import { EnquiryLink } from '../ui/EnquiryLink';
 import { Photo } from '../ui/Photo';
+import { StatusLabel } from '../ui/StatusLabel';
 import { Journey } from './Journey';
 
-/** Section 03: seven capability modules with a manually selected, crossfading image panel. */
+/** Section 03: the seven services in five groups. Each group expands to the full service detail. */
 export function Capabilities() {
-  const [selected, setSelected] = useState(capabilities[1].id);
-  const index = capabilities.findIndex((c) => c.id === selected);
-  const current = capabilities[index];
+  const [open, setOpen] = useState<string | null>(null);
   const s = sections.capabilities;
 
   return (
@@ -30,103 +28,63 @@ export function Capabilities() {
           intro={s.intro}
         />
 
-        <div className="capabilities__grid">
-          <div className="capabilities__visual">
-            <div className="cap-panel" id="capability-visual" aria-live="polite">
-              {capabilities.map((c, i) => {
-                // Only images for the selected module and its neighbours are mounted, so the crossfade has
-                // its image ready without loading all seven up front.
-                const near = Math.abs(i - index) <= 1;
-                const active = c.id === selected;
-                return (
-                  <div
-                    key={c.id}
-                    className={`cap-panel__layer${active ? ' is-active' : ''}`}
-                    aria-hidden={!active}
-                  >
-                    {'image' in c.visual
-                      ? near && (
-                          <Photo
-                            id={c.visual.image}
-                            alt={c.visual.alt}
-                            position={c.visual.position}
-                            sizes="(min-width: 1024px) 540px, 100vw"
-                          />
-                        )
-                      : near && (
-                          <div className="cap-panel__diagram">
-                            {c.visual.diagram === 'scale' ? (
-                              <ScaleDiagram />
-                            ) : (
-                              <RegulatoryFlow compact />
-                            )}
-                          </div>
-                        )}
-                  </div>
-                );
-              })}
-              <div className="cap-panel__caption">
-                <span className="mono-label">
-                  Module {current.no} · {current.title}
-                </span>
-                <p>{current.visual.caption}</p>
-                <div className="cap-panel__progress" aria-hidden="true">
-                  {capabilities.map((c) => (
-                    <i key={c.id} className={c.id === selected ? 'is-on' : undefined} />
-                  ))}
+        <ul className="cap-groups">
+          {capabilityGroups.map((g) => {
+            const isOpen = open === g.id;
+            const detailId = `cap-detail-${g.id}`;
+            return (
+              <li key={g.id} className={`cap-group${isOpen ? ' is-open' : ''}`} data-reveal>
+                <span className="cap-group__no">{g.no}</span>
+                <h3>{g.title}</h3>
+                <p className="cap-group__summary">{g.summary}</p>
+                {g.qualifier && <p className="cap-group__qualifier">{g.qualifier}</p>}
+                <StatusLabel status={g.status}>{statusLabels[g.status]}</StatusLabel>
+                <button
+                  type="button"
+                  className="cap-group__toggle"
+                  aria-expanded={isOpen}
+                  aria-controls={detailId}
+                  onClick={() => setOpen(isOpen ? null : g.id)}
+                >
+                  <Plus aria-hidden="true" size={16} />{' '}
+                  {isOpen ? 'Hide detail' : 'What is included'}
+                </button>
+                <div id={detailId} className="cap-group__detail" hidden={!isOpen}>
+                  {g.includes.map((id) => {
+                    const c = capabilities.find((x) => x.id === id)!;
+                    return (
+                      <div key={c.id}>
+                        <h4>{c.title}</h4>
+                        <p>{c.text}</p>
+                        <p className="cap-group__who">For: {c.who}</p>
+                      </div>
+                    );
+                  })}
+                  <EnquiryLink objective={g.objective} className="text-link text-link--dark">
+                    {g.cta} <ArrowRight aria-hidden="true" size={16} />
+                  </EnquiryLink>
                 </div>
-              </div>
-            </div>
+              </li>
+            );
+          })}
+        </ul>
 
-            <aside className="clearx9" aria-labelledby="clearx9-title">
-              <Photo
-                id="clearx9-media"
-                alt="Three ClearX9 cell growth medium bottles with two dishes of cultured cells"
-                sizes="200px"
-                className="clearx9__img"
-              />
-              <div data-claim="requires-approval">
-                <span className="mono-label">Specialised input</span>
-                <h3 id="clearx9-title">{clearx9.title}</h3>
-                <p>{clearx9.text}</p>
-                <EnquiryLink objective="rnd" className="text-link">
-                  {clearx9.cta} <ArrowRight aria-hidden="true" size={16} />
-                </EnquiryLink>
-              </div>
-            </aside>
+        <div className="cap-callout" data-reveal>
+          <div className="cap-callout__media">
+            <Photo
+              id="clearx9-media"
+              alt="Three bottles of ClearX9 cell growth media: Stem, Neuro and standard"
+              sizes="(min-width: 768px) 320px, 100vw"
+            />
           </div>
-
-          <ul className="cap-list" aria-label="Capability modules">
-            {capabilities.map((c) => {
-              const isSelected = c.id === selected;
-              return (
-                <li key={c.id} className={`cap-item${isSelected ? ' is-selected' : ''}`}>
-                  <button
-                    type="button"
-                    className="cap-item__btn"
-                    aria-pressed={isSelected}
-                    aria-controls="capability-visual"
-                    onClick={() => setSelected(c.id)}
-                  >
-                    <span className="cap-item__no mono-label">
-                      Module {c.no}
-                      {isSelected && <span className="cap-item__sel"> · Selected</span>}
-                    </span>
-                    <span className="cap-item__title">{c.title}</span>
-                    <span className="cap-item__text">{c.text}</span>
-                    <span className="cap-item__who mono-label">{c.who}</span>
-                  </button>
-                </li>
-              );
-            })}
-            <li className="cap-item cap-item--cta">
-              <span className="mono-label">Combine modules</span>
-              <p>Build the engagement your programme needs.</p>
-              <EnquiryLink objective={current.objective} className="text-link text-link--dark">
-                Work With APEX <ArrowRight aria-hidden="true" size={16} />
-              </EnquiryLink>
-            </li>
-          </ul>
+          <div>
+            <span className="cap-callout__label">Specialised input</span>
+            <h3 data-claim="requires-approval">{clearx9.title}</h3>
+            <p data-claim="requires-approval">{clearx9.text}</p>
+          </div>
+          <EnquiryLink objective="rnd" className="btn btn--dark btn--sm">
+            {clearx9.cta} <ArrowRight aria-hidden="true" size={16} />
+          </EnquiryLink>
         </div>
 
         <Journey />

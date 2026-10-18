@@ -2,102 +2,123 @@ import type { ObjectiveId, Status } from './types';
 
 export type Capability = {
   id: string;
-  no: string;
   title: string;
   text: string;
   who: string;
-  /** Visual shown in the image panel when this module is selected. */
-  visual:
-    | { image: string; caption: string; alt: string; position?: string }
-    | { diagram: 'scale' | 'regulatory'; caption: string };
-  objective: ObjectiveId;
 };
 
+/** The seven services, kept in full; the homepage shows them inside the five groups below. */
 export const capabilities: Capability[] = [
   {
     id: 'infrastructure',
-    no: '01',
     title: 'Shared research infrastructure',
     text: 'Laboratory space, equipment and utilities on flexible terms, including pay-per-seat access for early-stage teams.',
     who: 'Startups · researchers',
-    visual: {
-      image: 'researcher-cabinet',
-      caption: 'Shared research infrastructure',
-      alt: 'A researcher pipetting into a multi-well plate inside a biosafety cabinet at the ClearMeat laboratory',
-    },
-    objective: 'infrastructure',
   },
   {
     id: 'contract-rnd',
-    no: '02',
     title: 'Contract R&D',
     text: 'Scoped research programmes delivered by APEX scientists, from feasibility studies to media and process optimisation.',
     who: 'Corporate R&D · international',
-    visual: {
-      image: 'research-team',
-      caption: 'Contract R&D with experienced research teams',
-      alt: 'ClearMeat researchers in lab coats working together at a laboratory bench',
-      position: '50% 72%',
-    },
-    objective: 'rnd',
   },
   {
     id: 'development',
-    no: '03',
     title: 'Product and process development',
     text: 'Turn a promising result into a documented, repeatable process and a prototype product.',
     who: 'Startups · corporates',
-    visual: {
-      image: 'cell-culture-plate',
-      caption: 'From result to repeatable process',
-      alt: 'A 12-well cell-culture plate with pink growth medium and handwritten labels',
-    },
-    objective: 'rnd',
   },
   {
     id: 'pilot',
-    no: '04',
     title: 'Pilot-production support',
     text: 'Pilot trials with APEX and partners to produce samples and data. This is pilot-scale support, not commercial manufacturing.',
     who: 'Startups · corporates',
-    visual: {
-      image: 'media-preparation',
-      caption: 'Media preparation for larger runs',
-      alt: 'Red growth medium being vacuum-filtered into glass bottles inside a biosafety cabinet',
-    },
-    objective: 'pilot',
   },
   {
     id: 'scale',
-    no: '05',
     title: 'Scale-up and manufacturing readiness',
     text: 'Equipment planning, techno-economic input and partner introductions for a credible route to manufacturing in India.',
     who: 'Scaling companies',
-    visual: { diagram: 'scale', caption: 'Diagram · from bench to manufacturing readiness' },
-    objective: 'pilot',
   },
   {
     id: 'india-entry',
-    no: '06',
     title: 'India market entry and regulatory guidance',
     text: 'Orientation on FSSAI novel-food regulation, technology localisation, sourcing and local partners.',
     who: 'International companies',
-    visual: { diagram: 'regulatory', caption: 'Diagram · regulatory support journey' },
-    objective: 'india-entry',
   },
   {
     id: 'training',
-    no: '07',
     title: 'Training and collaboration',
     text: 'Hands-on training, joint research and knowledge exchange with institutions and public programmes.',
     who: 'Institutions · government',
-    visual: {
-      image: 'research-team',
-      caption: 'Training and collaboration',
-      alt: 'ClearMeat researchers in lab coats working together at a laboratory bench',
-      position: '50% 72%',
-    },
+  },
+];
+
+export type CapabilityGroup = {
+  id: string;
+  no: string;
+  title: string;
+  summary: string;
+  /** Plain-language limit shown with the group, where a claim needs one. */
+  qualifier?: string;
+  includes: string[];
+  /** Draft readiness. REQUIRES APPROVAL. */
+  status: Status;
+  objective: ObjectiveId;
+  cta: string;
+};
+
+export const capabilityGroups: CapabilityGroup[] = [
+  {
+    id: 'access',
+    no: '01',
+    title: 'Access shared labs',
+    summary: 'Research space and equipment without building your own facility first.',
+    includes: ['infrastructure'],
+    status: 'foundation',
+    objective: 'infrastructure',
+    cta: 'Ask about access',
+  },
+  {
+    id: 'develop',
+    no: '02',
+    title: 'Contract R&D and development',
+    summary: 'Scoped research, then a documented, repeatable process and prototype.',
+    includes: ['contract-rnd', 'development'],
+    status: 'foundation',
+    objective: 'rnd',
+    cta: 'Discuss an R&D project',
+  },
+  {
+    id: 'scale',
+    no: '03',
+    title: 'Pilot and scale readiness',
+    summary: 'Samples and scale data, and a credible plan towards manufacturing in India.',
+    qualifier: 'Pilot-scale support with partners. Not commercial manufacturing.',
+    includes: ['pilot', 'scale'],
+    status: 'partner',
+    objective: 'pilot',
+    cta: 'Explore pilot support',
+  },
+  {
+    id: 'india',
+    no: '04',
+    title: 'India entry and regulatory orientation',
+    summary: 'Localisation, sourcing, partners and the FSSAI novel-food route.',
+    qualifier: 'Guidance only. Approvals are issued by the relevant authority, not APEX.',
+    includes: ['india-entry'],
+    status: 'partner',
+    objective: 'india-entry',
+    cta: 'Explore India entry',
+  },
+  {
+    id: 'learn',
+    no: '05',
+    title: 'Training and collaboration',
+    summary: 'Hands-on training, joint research and knowledge exchange.',
+    includes: ['training'],
+    status: 'foundation',
     objective: 'training',
+    cta: 'Discuss training',
   },
 ];
 

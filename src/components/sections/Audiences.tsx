@@ -9,7 +9,11 @@ const icons = { rocket: Rocket, briefcase: Briefcase, globe: Globe2, landmark: L
 export function Audiences({ detailed = false }: { detailed?: boolean }) {
   const s = sections.audiences;
   return (
-    <section id="who" className="section section--sage audiences" aria-labelledby="audiences-title">
+    <section
+      id="who"
+      className="section section--light audiences"
+      aria-labelledby="audiences-title"
+    >
       <div className="wrap">
         <div className="audiences__head" data-reveal>
           <p className="eyebrow">{s.eyebrow}</p>

@@ -1,71 +1,25 @@
 import type { PathwayId, Status } from './types';
 
-export type FoundationId = 'labs' | 'process' | 'testing' | 'pilot' | 'regulatory' | 'training';
-
-export const foundation: {
-  id: FoundationId;
-  no: string;
-  title: string;
-  short: string;
-  text: string;
-}[] = [
-  {
-    id: 'labs',
-    no: '01',
-    title: 'Research laboratories',
-    short: 'Labs',
-    text: 'Shared laboratory space, utilities and aseptic work areas.',
-  },
-  {
-    id: 'process',
-    no: '02',
-    title: 'Process development',
-    short: 'Process',
-    text: 'From experiment to a documented, repeatable process.',
-  },
-  {
-    id: 'testing',
-    no: '03',
-    title: 'Testing and analytics',
-    short: 'Testing',
-    text: 'Characterisation, quality and food-safety testing support.',
-  },
-  {
-    id: 'pilot',
-    no: '04',
-    title: 'Pilot and scale-up support',
-    short: 'Pilot',
-    text: 'Pilot trials and scale-up planning with partners. Not commercial manufacturing.',
-  },
-  {
-    id: 'regulatory',
-    no: '05',
-    title: 'Regulatory guidance',
-    short: 'Regulatory',
-    text: 'Guidance on FSSAI requirements and market entry. APEX does not grant approvals.',
-  },
-  {
-    id: 'training',
-    no: '06',
-    title: 'Training and industry network',
-    short: 'Network',
-    text: 'Skills, collaboration and introductions across the ecosystem.',
-  },
-];
+/**
+ * Pathway panel visual. `photo` is an authentic, approved image id. `pending` marks a slot still waiting for a
+ * rights-cleared real photograph (see docs/APEX_IMAGE_ASSET_REGISTER.md); it renders as a labelled placeholder,
+ * never as a stand-in picture.
+ */
+export type PathwayVisual =
+  | { kind: 'photo'; image: string; caption: string; alt: string; position?: string }
+  | { kind: 'pending'; need: string };
 
 export type Pathway = {
   id: PathwayId;
   no: string;
   family: string;
   title: string;
+  /** One sentence for the panel. */
   text: string;
   applications: string;
-  /** Visual: a client photo id, or an original SVG diagram when no authentic, licensed photo exists. */
-  visual:
-    | { kind: 'photo'; image: string; caption: string }
-    | { kind: 'diagram'; diagram: 'bioreactor' | 'extrusion'; caption: string };
-  /** Which shared modules the pathway draws on, and (draft) how ready each is. REQUIRES APPROVAL. */
-  uses: Partial<Record<FoundationId, Status>>;
+  visual: PathwayVisual;
+  /** Draft readiness shown on the panel. REQUIRES APPROVAL. */
+  status: Status;
 };
 
 export const pathways: Pathway[] = [
@@ -73,58 +27,42 @@ export const pathways: Pathway[] = [
     id: 'cellular',
     no: '01',
     family: 'Cellular agriculture',
-    title: 'Cultivated meat',
+    title: 'Cultivated proteins',
     text: 'Cell-line work, growth-media development and cell-culture research for cultivated meat, seafood and cell-based ingredients.',
-    applications: 'Cultivated meat and seafood · growth-media development · cell-based fats',
-    visual: { kind: 'photo', image: 'cell-culture-plate', caption: 'ClearMeat research' },
-    uses: {
-      labs: 'foundation',
-      process: 'foundation',
-      testing: 'foundation',
-      pilot: 'development',
-      regulatory: 'partner',
-      training: 'foundation',
+    applications: 'Cultivated meat and seafood · growth media · cell-based fats',
+    visual: {
+      kind: 'photo',
+      image: 'cell-culture-plate',
+      caption: 'Cell culture · ClearMeat laboratory',
+      alt: 'A 12-well cell-culture plate with pink growth medium and handwritten labels',
     },
+    status: 'foundation',
   },
   {
     id: 'fermentation',
     no: '02',
-    family: 'Fermentation',
-    title: 'Precision fermentation',
-    text: 'Strain and process development for biomass and precision-fermented proteins and functional ingredients, from flask to pilot-ready parameters.',
+    family: 'Biomass and precision fermentation',
+    title: 'Fermentation',
+    text: 'Strain and process development for biomass and precision-fermented proteins, from flask to pilot-ready parameters.',
     applications: 'Mycoprotein · dairy and egg proteins · functional ingredients',
     visual: {
-      kind: 'diagram',
-      diagram: 'bioreactor',
-      caption: 'Diagram · stirred-tank bioreactor',
+      kind: 'pending',
+      need: 'Real stainless-steel bioreactor or fermentation facility, licensed',
     },
-    uses: {
-      labs: 'foundation',
-      process: 'foundation',
-      testing: 'foundation',
-      pilot: 'partner',
-      regulatory: 'partner',
-    },
+    status: 'foundation',
   },
   {
     id: 'plant',
     no: '03',
     family: 'Plant-based',
-    title: 'Plant protein',
-    text: 'Ingredient characterisation, formulation and processing trials using Indian pulses, oilseeds and grains, for domestic and export markets.',
+    title: 'Plant-based proteins',
+    text: 'Ingredient characterisation, formulation and processing trials using Indian pulses, oilseeds and grains.',
     applications: 'Textured pulse proteins · plant-based meat and dairy · protein ingredients',
     visual: {
-      kind: 'diagram',
-      diagram: 'extrusion',
-      caption: 'Diagram · plant-protein texturisation',
+      kind: 'pending',
+      need: 'Real plant-protein processing, extrusion or product R&D, licensed',
     },
-    uses: {
-      labs: 'foundation',
-      process: 'foundation',
-      testing: 'foundation',
-      pilot: 'partner',
-      regulatory: 'partner',
-    },
+    status: 'foundation',
   },
 ];
 

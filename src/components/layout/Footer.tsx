@@ -17,9 +17,7 @@ export function Footer() {
         </div>
         <div className="site-footer__logos">
           <Logo name="apex-dark" className="site-footer__apex" />
-          <span className="site-footer__plate">
-            <Logo name="clearmeat" />
-          </span>
+          <Logo name="clearmeat-dark" className="site-footer__clearmeat" />
           <Logo name="niftem-white" className="site-footer__niftem" />
         </div>
       </div>

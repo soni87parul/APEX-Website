@@ -13,7 +13,9 @@ const logos = {
   },
   'niftem-white': { file: 'niftem-kundli-white', w: 400, h: 141, alt: 'NIFTEM-Kundli' },
   'niftem-green': { file: 'niftem-kundli-green', w: 400, h: 141, alt: 'NIFTEM-Kundli' },
-  clearmeat: { file: 'clearmeat-logo', w: 172, h: 100, alt: 'ClearMeat' },
+  // Transparent variants from scripts/brand-variants.mjs. Low-resolution source: see APEX_BRAND_ASSET_REVIEW.md.
+  'clearmeat-light': { file: 'clearmeat-on-light', w: 172, h: 100, alt: 'ClearMeat' },
+  'clearmeat-dark': { file: 'clearmeat-on-dark', w: 172, h: 100, alt: 'ClearMeat' },
 } as const;
 
 export type LogoName = keyof typeof logos;

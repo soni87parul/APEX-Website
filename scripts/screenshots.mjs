@@ -31,33 +31,38 @@ try {
   await waitForServer();
   await mkdir(OUT, { recursive: true });
   const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
-  for (const width of widths) {
-    const page = await browser.newPage({
-      viewport: { width, height: width < 768 ? 844 : 900 },
-      deviceScaleFactor: 1,
-      reducedMotion: 'reduce',
-    });
-    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
-    // Scroll through so lazy images load, then return to the top.
-    const height = await page.evaluate(() => document.body.scrollHeight);
-    for (let y = 0; y < height; y += 600) {
-      await page.evaluate((yy) => window.scrollTo(0, yy), y);
-      await page.waitForTimeout(60);
+  const pages = [
+    ['home', '/'],
+    ['events', '/events/'],
+  ];
+  for (const [name, route] of pages)
+    for (const width of widths) {
+      const page = await browser.newPage({
+        viewport: { width, height: width < 768 ? 844 : 900 },
+        deviceScaleFactor: 1,
+        reducedMotion: 'reduce',
+      });
+      await page.goto(BASE + route, { waitUntil: 'networkidle' });
+      // Scroll through so lazy images load, then return to the top.
+      const height = await page.evaluate(() => document.body.scrollHeight);
+      for (let y = 0; y < height; y += 600) {
+        await page.evaluate((yy) => window.scrollTo(0, yy), y);
+        await page.waitForTimeout(60);
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.evaluate(() =>
+        Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => {}))),
+      );
+      await page.waitForTimeout(400);
+      await page.screenshot({
+        path: `${OUT}/${name}-${width}.jpg`,
+        fullPage: true,
+        type: 'jpeg',
+        quality: 72,
+      });
+      console.log('saved', `${OUT}/${name}-${width}.jpg`);
+      await page.close();
     }
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.evaluate(() =>
-      Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => {}))),
-    );
-    await page.waitForTimeout(400);
-    await page.screenshot({
-      path: `${OUT}/home-${width}.jpg`,
-      fullPage: true,
-      type: 'jpeg',
-      quality: 72,
-    });
-    console.log('saved', `${OUT}/home-${width}.jpg`);
-    await page.close();
-  }
 
   // Mobile interaction states at 390px: menu open, enquiry step 2, an inline validation error.
   const m = await browser.newPage({
