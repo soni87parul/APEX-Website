@@ -125,9 +125,16 @@ const galleryItems = (from: number, count: number): GalleryItem[] =>
     };
   });
 
-export const albums: GalleryAlbum[] = [
-  { id: 'album-a', title: 'Flagship event', year: 'Album 1', items: galleryItems(1, 8) },
-  { id: 'album-b', title: 'Workshops and site visits', year: 'Album 2', items: galleryItems(9, 4) },
+/** Genuine event photographs only, uploaded after each event. Empty until the first real album exists. */
+export const albums: GalleryAlbum[] = [];
+
+/**
+ * Labelled layout tiles, shown only in review mode (?review) while `albums` is empty, so the gallery layout
+ * can be judged. Never shown to the public and never presented as event coverage.
+ */
+export const layoutDemoAlbums: GalleryAlbum[] = [
+  { id: 'demo-a', title: 'Layout demo A', year: 'Demo', items: galleryItems(1, 8) },
+  { id: 'demo-b', title: 'Layout demo B', year: 'Demo', items: galleryItems(9, 4) },
 ];
 
 export const mediaItems: MediaItem[] = [
@@ -164,6 +171,7 @@ export const mediaItems: MediaItem[] = [
 export const eventsPage = {
   galleryTitle: 'Photos and video',
   galleryIntro: 'Moments from APEX events, workshops and visits.',
+  galleryEmpty: 'Photos from APEX events will appear here after each event.',
   mediaTitle: 'Media and insights',
   mediaIntro: 'Selected posts, news and videos.',
   noHero: {

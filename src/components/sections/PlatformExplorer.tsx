@@ -8,6 +8,7 @@ import { ExtrusionDiagram } from '../graphics/ExtrusionDiagram';
 import { RegulatoryFlow } from '../graphics/RegulatoryFlow';
 import { EnquiryLink } from '../ui/EnquiryLink';
 import { Photo } from '../ui/Photo';
+import { PhotoTag } from '../ui/PhotoTag';
 import { StatusLabel } from '../ui/StatusLabel';
 
 /**
@@ -74,7 +75,9 @@ export function PlatformExplorer() {
                 }
                 position={p.position}
               />
-              <figcaption className="photo-tag">{p.caption}</figcaption>
+              <figcaption>
+                <PhotoTag image={p.image}>{p.caption}</PhotoTag>
+              </figcaption>
             </figure>
           ))}
           <div className="inside__photo inside__photo--pending" data-reveal>

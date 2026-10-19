@@ -2,7 +2,7 @@
 // Run with `npm run images` whenever an original changes. Outputs are committed.
 // ClearMeat variants come from scripts/brand-variants.mjs (npm run brand).
 import sharp from 'sharp';
-import { mkdir } from 'node:fs/promises';
+import { access, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const SRC = 'assets-src';
@@ -45,6 +45,32 @@ const photos = [
     widths: [584],
     keepAlpha: true,
   },
+  // APEX Visual Asset Repository, round 1: AI-generated conceptual images (illustrative only, never presented
+  // as APEX facilities, events or people). Originals live in assets-src/apex/ with their pack folder names.
+  {
+    id: 'fermentation-bioreactor-concept',
+    src: 'apex/02_generated_conceptual_hero/fermentation_bioreactor_wide.jpg',
+    widths: [640, 1024, 1600],
+    out: 'apex',
+  },
+  {
+    id: 'plant-protein-processing-concept',
+    src: 'apex/02_generated_conceptual_hero/plant_protein_processing_wide.jpg',
+    widths: [640, 1024, 1600],
+    out: 'apex',
+  },
+  {
+    id: 'cell-culture-concept',
+    src: 'apex/02_generated_conceptual_hero/cell_culture_detail_wide.jpg',
+    widths: [640, 1024, 1600],
+    out: 'apex',
+  },
+  {
+    id: 'conference-concept',
+    src: 'apex/02_generated_conceptual_hero/conference_audience_wide.jpg',
+    widths: [960, 1600, 2400],
+    out: 'apex',
+  },
 ];
 
 const logos = [
@@ -55,16 +81,28 @@ const logos = [
 ];
 
 await mkdir(path.join(OUT, 'photos'), { recursive: true });
+await mkdir(path.join(OUT, 'apex'), { recursive: true });
 await mkdir(path.join(OUT, 'logos'), { recursive: true });
 
+const exists = (f) =>
+  access(f).then(
+    () => true,
+    () => false,
+  );
+
 for (const p of photos) {
-  for (const w of p.widths) {
+  if (!(await exists(path.join(SRC, p.src)))) {
+    console.warn('skip (source not supplied yet):', p.src);
+    continue;
+  }
+  const { width: srcWidth } = await sharp(path.join(SRC, p.src)).metadata();
+  for (const w of p.widths.filter((x, i) => i === 0 || x <= (p.extract?.width ?? srcWidth))) {
     const base = () => {
       let img = sharp(path.join(SRC, p.src)).rotate();
       if (p.extract) img = img.extract(p.extract);
       return img.resize({ width: w, withoutEnlargement: true });
     };
-    const stem = path.join(OUT, 'photos', `${p.id}-${w}`);
+    const stem = path.join(OUT, p.out ?? 'photos', `${p.id}-${w}`);
     await base().avif({ quality: 52, effort: 6 }).toFile(`${stem}.avif`);
     await base().webp({ quality: 74 }).toFile(`${stem}.webp`);
     if (p.keepAlpha) await base().png({ compressionLevel: 9, palette: true }).toFile(`${stem}.png`);

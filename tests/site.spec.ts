@@ -212,11 +212,17 @@ test.describe('events page', () => {
     expect(errors).toEqual([]);
   });
 
-  test('gallery albums filter and the lightbox works with the keyboard', async ({ page }) => {
+  test('the public gallery shows only real event photos (none yet)', async ({ page }) => {
     await page.goto('/events/');
+    await expect(page.locator('.ev-gallery__item')).toHaveCount(0);
+    await expect(page.getByText('Photos from APEX events will appear here')).toBeVisible();
+  });
+
+  test('review-mode layout demo: album filter and keyboard lightbox', async ({ page }) => {
+    await page.goto('/events/?review');
     const items = page.locator('.ev-gallery__item');
     await expect(items).toHaveCount(12);
-    await page.getByRole('button', { name: 'Workshops and site visits' }).click();
+    await page.getByRole('button', { name: 'Layout demo B' }).click();
     await expect(items).toHaveCount(4);
     await page.getByRole('button', { name: 'All', exact: true }).click();
     const first = items.first().getByRole('button');

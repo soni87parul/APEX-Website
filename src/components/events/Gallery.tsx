@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { albums, eventsPage } from '../../content/events';
+import { albums as liveAlbums, eventsPage, layoutDemoAlbums } from '../../content/events';
 import { EventImage } from './EventImage';
 
 /** Editorial mosaic with album filter and an accessible lightbox (native dialog, arrows, Escape). */
 export function Gallery() {
+  const demo =
+    liveAlbums.length === 0 && document.documentElement.classList.contains('review-mode');
+  const albums = demo ? layoutDemoAlbums : liveAlbums;
   const [albumId, setAlbumId] = useState('all');
   const [index, setIndex] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -43,19 +46,28 @@ export function Gallery() {
             <h2 id="gallery-title">{eventsPage.galleryTitle}</h2>
             <p>{eventsPage.galleryIntro}</p>
           </div>
-          <div className="ev-gallery__albums" role="group" aria-label="Albums">
-            {[{ id: 'all', title: 'All' }, ...albums].map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                aria-pressed={albumId === a.id}
-                onClick={() => setAlbumId(a.id)}
-              >
-                {a.title}
-              </button>
-            ))}
-          </div>
+          {albums.length > 0 && (
+            <div className="ev-gallery__albums" role="group" aria-label="Albums">
+              {[{ id: 'all', title: 'All' }, ...albums].map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  aria-pressed={albumId === a.id}
+                  onClick={() => setAlbumId(a.id)}
+                >
+                  {a.title}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+
+        {demo && (
+          <p className="ev-gallery__demo">
+            Layout demo, visible in review mode only. Real event photos replace these tiles.
+          </p>
+        )}
+        {albums.length === 0 && <p className="ev-gallery__empty">{eventsPage.galleryEmpty}</p>}
 
         <ul className="ev-gallery__grid">
           {items.map((it, i) => (

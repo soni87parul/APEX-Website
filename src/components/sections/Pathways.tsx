@@ -3,6 +3,7 @@ import { pathways, statusLabels } from '../../content/pathways';
 import { sections } from '../../content/site';
 import { SectionHeading } from '../layout/SectionHeading';
 import { Photo } from '../ui/Photo';
+import { PhotoTag } from '../ui/PhotoTag';
 import { StatusLabel } from '../ui/StatusLabel';
 
 /** Section 02: three photographic pathway panels. Each opens the matching Inside APEX tab. */
@@ -28,7 +29,7 @@ export function Pathways() {
                       sizes="(min-width: 1024px) 33vw, 100vw"
                       position={p.visual.position}
                     />
-                    <span className="photo-tag">{p.visual.caption}</span>
+                    <PhotoTag image={p.visual.image}>{p.visual.caption}</PhotoTag>
                   </>
                 ) : (
                   <div className="pw-panel__pending" role="img" aria-label="Photo to come">
