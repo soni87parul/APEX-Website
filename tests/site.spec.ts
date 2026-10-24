@@ -254,3 +254,23 @@ test.describe('events page', () => {
     ).toEqual([]);
   });
 });
+
+for (const route of ['/', '/events/']) {
+  test(`every AI-generated concept image on ${route} carries a visible label`, async ({ page }) => {
+    await page.goto(route);
+    const imgs = page.locator('img[src*="/images/apex/"]');
+    expect(await imgs.count()).toBeGreaterThan(0);
+    const unlabelled = await imgs.evaluateAll((els) =>
+      els
+        .filter(
+          (img) =>
+            !img.closest('picture')?.parentElement?.querySelector('.photo-tag--illustrative'),
+        )
+        .map((img) => img.getAttribute('src')),
+    );
+    expect(unlabelled).toEqual([]);
+    for (const alt of await imgs.evaluateAll((els) => els.map((e) => e.getAttribute('alt') ?? '')))
+      expect(alt).toMatch(/^Illustrative /);
+    await expect(page.locator('.ev-gallery img[src*="/images/apex/"]')).toHaveCount(0);
+  });
+}

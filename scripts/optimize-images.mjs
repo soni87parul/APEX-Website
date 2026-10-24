@@ -46,31 +46,35 @@ const photos = [
     keepAlpha: true,
   },
   // APEX Visual Asset Repository, round 1: AI-generated conceptual images (illustrative only, never presented
-  // as APEX facilities, events or people). Originals live in assets-src/apex/ with their pack folder names.
-  {
-    id: 'fermentation-bioreactor-concept',
-    src: 'apex/02_generated_conceptual_hero/fermentation_bioreactor_wide.jpg',
-    widths: [640, 1024, 1600],
+  // as APEX facilities, events or people). Full-size originals go in assets-src/apex/ with their pack folder
+  // names. Until they are supplied, `preview` points at the ~324 px tile cut from the pack's contact sheet
+  // (scripts/contact-sheet-crops.mjs), which is processed at its own width only and never enlarged.
+  ...[
+    [
+      'fermentation-bioreactor-concept',
+      '02_generated_conceptual_hero',
+      'fermentation_bioreactor_wide',
+    ],
+    [
+      'plant-protein-processing-concept',
+      '02_generated_conceptual_hero',
+      'plant_protein_processing_wide',
+    ],
+    ['conference-stage-concept', '02_generated_conceptual_hero', 'conference_audience_wide'],
+    ['conference-audience-concept', '03_generated_editorial_thumbnails', 'conference_audience'],
+    ['panel-discussion-concept', '03_generated_editorial_thumbnails', 'panel_discussion'],
+    ['laboratory-interior-concept', '03_generated_editorial_thumbnails', 'laboratory_interior'],
+    ['process-development-concept', '03_generated_editorial_thumbnails', 'process_development'],
+    ['pilot-operations-concept', '03_generated_editorial_thumbnails', 'pilot_operations'],
+    ['corporate-meeting-concept', '03_generated_editorial_thumbnails', 'corporate_meeting'],
+    ['scientist-microscope-concept', '03_generated_editorial_thumbnails', 'scientist_microscope'],
+  ].map(([id, folder, name]) => ({
+    id,
+    src: `apex/${folder}/${name}.jpg`,
+    widths: folder.startsWith('02') ? [640, 1024, 1600] : [480, 800],
+    preview: { src: `apex/contact-sheet/${name}.jpg`, widths: [324] },
     out: 'apex',
-  },
-  {
-    id: 'plant-protein-processing-concept',
-    src: 'apex/02_generated_conceptual_hero/plant_protein_processing_wide.jpg',
-    widths: [640, 1024, 1600],
-    out: 'apex',
-  },
-  {
-    id: 'cell-culture-concept',
-    src: 'apex/02_generated_conceptual_hero/cell_culture_detail_wide.jpg',
-    widths: [640, 1024, 1600],
-    out: 'apex',
-  },
-  {
-    id: 'conference-concept',
-    src: 'apex/02_generated_conceptual_hero/conference_audience_wide.jpg',
-    widths: [960, 1600, 2400],
-    out: 'apex',
-  },
+  })),
 ];
 
 const logos = [
@@ -90,7 +94,14 @@ const exists = (f) =>
     () => false,
   );
 
-for (const p of photos) {
+for (const entry of photos) {
+  let p = entry;
+  if (!(await exists(path.join(SRC, p.src))) && p.preview) {
+    if (await exists(path.join(SRC, p.preview.src))) {
+      console.warn('using contact-sheet stand-in for', p.id);
+      p = { ...p, ...p.preview };
+    }
+  }
   if (!(await exists(path.join(SRC, p.src)))) {
     console.warn('skip (source not supplied yet):', p.src);
     continue;

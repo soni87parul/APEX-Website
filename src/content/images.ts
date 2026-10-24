@@ -20,6 +20,21 @@ type ImageSet = {
   source: string;
 };
 
+/**
+ * APEX Visual Asset Repository, round 1 (AI-generated). PREVIEW STAND-IN: until the full-size pack files are
+ * supplied these are the ~324 x 180 px tiles cut from the pack's contact sheet, so they look soft when shown
+ * large. When the originals arrive, set widths to what scripts/optimize-images.mjs outputs for them.
+ */
+const concept = (name: string): ImageSet => ({
+  widths: [324],
+  width: 324,
+  height: 180,
+  fallback: 'jpg',
+  dir: 'apex',
+  provenance: 'illustrative',
+  source: `APEX Visual Asset Repository round 1 · ${name}.jpg (contact-sheet tile)`,
+});
+
 export const images: Record<string, ImageSet> = {
   'researcher-cabinet': {
     widths: [640, 960, 1280],
@@ -75,6 +90,16 @@ export const images: Record<string, ImageSet> = {
     provenance: 'authentic',
     source: 'ClearMeat ClearX9_product.png',
   },
+  'fermentation-bioreactor-concept': concept('fermentation_bioreactor_wide'),
+  'plant-protein-processing-concept': concept('plant_protein_processing_wide'),
+  'conference-stage-concept': concept('conference_audience_wide'),
+  'conference-audience-concept': concept('conference_audience'),
+  'panel-discussion-concept': concept('panel_discussion'),
+  'laboratory-interior-concept': concept('laboratory_interior'),
+  'process-development-concept': concept('process_development'),
+  'pilot-operations-concept': concept('pilot_operations'),
+  'corporate-meeting-concept': concept('corporate_meeting'),
+  'scientist-microscope-concept': concept('scientist_microscope'),
 };
 
 export const isIllustrative = (id: string) => images[id]?.provenance === 'illustrative';

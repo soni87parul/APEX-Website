@@ -1,7 +1,7 @@
 import type { PathwayId, Status } from './types';
 
 /**
- * Pathway panel visual. `photo` is an authentic, approved image id. `pending` marks a slot still waiting for a
+ * Pathway panel visual. `photo` is an image id from the register; illustrative images are labelled on the panel. `pending` marks a slot still waiting for a
  * rights-cleared real photograph (see docs/APEX_IMAGE_ASSET_REGISTER.md); it renders as a labelled placeholder,
  * never as a stand-in picture.
  */
@@ -46,8 +46,10 @@ export const pathways: Pathway[] = [
     text: 'Strain and process development for biomass and precision-fermented proteins, from flask to pilot-ready parameters.',
     applications: 'Mycoprotein · dairy and egg proteins · functional ingredients',
     visual: {
-      kind: 'pending',
-      need: 'Real stainless-steel bioreactor or fermentation facility, licensed',
+      kind: 'photo',
+      image: 'fermentation-bioreactor-concept',
+      caption: 'concept, not APEX equipment',
+      alt: 'Illustrative stainless-steel bioreactors used to explain fermentation technology',
     },
     status: 'foundation',
   },
@@ -59,8 +61,10 @@ export const pathways: Pathway[] = [
     text: 'Ingredient characterisation, formulation and processing trials using Indian pulses, oilseeds and grains.',
     applications: 'Textured pulse proteins · plant-based meat and dairy · protein ingredients',
     visual: {
-      kind: 'pending',
-      need: 'Real plant-protein processing, extrusion or product R&D, licensed',
+      kind: 'photo',
+      image: 'plant-protein-processing-concept',
+      caption: 'concept, not APEX equipment',
+      alt: 'Illustrative plant-protein processing line used to explain plant-based protein technology',
     },
     status: 'foundation',
   },

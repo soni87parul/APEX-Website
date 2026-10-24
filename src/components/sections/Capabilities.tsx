@@ -6,6 +6,7 @@ import { sections } from '../../content/site';
 import { SectionHeading } from '../layout/SectionHeading';
 import { EnquiryLink } from '../ui/EnquiryLink';
 import { Photo } from '../ui/Photo';
+import { PhotoTag } from '../ui/PhotoTag';
 import { StatusLabel } from '../ui/StatusLabel';
 import { Journey } from './Journey';
 
@@ -34,6 +35,16 @@ export function Capabilities() {
             const detailId = `cap-detail-${g.id}`;
             return (
               <li key={g.id} className={`cap-group${isOpen ? ' is-open' : ''}`} data-reveal>
+                {g.image && (
+                  <div className="cap-group__media">
+                    <Photo
+                      id={g.image.id}
+                      alt={g.image.alt}
+                      sizes="(min-width: 1200px) 240px, (min-width: 700px) 45vw, 100vw"
+                    />
+                    <PhotoTag image={g.image.id}>concept</PhotoTag>
+                  </div>
+                )}
                 <span className="cap-group__no">{g.no}</span>
                 <h3>{g.title}</h3>
                 <p className="cap-group__summary">{g.summary}</p>

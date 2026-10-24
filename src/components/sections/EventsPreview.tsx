@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { sections } from '../../content/site';
-import { promo } from '../../content/events';
+import { eventsPreviewImage } from '../../content/events';
+import { ConceptTag } from '../events/ConceptTag';
 import { EventImage } from '../events/EventImage';
 
 /** Section 07: one editorial image, one line and a link to /events/. */
@@ -10,16 +11,8 @@ export function EventsPreview() {
     <section className="events-preview" aria-labelledby="events-preview-title">
       <div className="wrap events-preview__inner">
         <div className="events-preview__media" data-reveal>
-          <EventImage
-            image={{
-              ...promo.image,
-              src: '/images/placeholders/events-preview',
-              width: 1400,
-              height: 1000,
-              widths: [700, 1400],
-            }}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
+          <EventImage image={eventsPreviewImage} sizes="(min-width: 1024px) 50vw, 100vw" />
+          <ConceptTag image={eventsPreviewImage} />
         </div>
         <div className="events-preview__text" data-reveal>
           <p className="eyebrow">{s.eyebrow}</p>

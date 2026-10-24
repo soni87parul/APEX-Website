@@ -1632,3 +1632,45 @@
   font-weight: 700;
   color: var(--amber);
 }
+
+/* ---------- Concept imagery (APEX Visual Asset Repository, illustrative) ---------- */
+.cap-group__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 6px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--sage-pale);
+}
+
+.cap-group__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cap-group__media .photo-tag {
+  left: 8px;
+  bottom: 8px;
+  padding: 3px 8px;
+  font-size: 0.6875rem;
+}
+
+.ev-hero__tag {
+  top: calc(var(--header-h) + 16px);
+  right: 16px;
+  bottom: auto;
+  left: auto;
+}
+
+.ev-next__figure,
+.events-preview__media {
+  position: relative;
+}
+
+@media (max-width: 699px) {
+  .cap-group__media {
+    aspect-ratio: 12 / 5;
+  }
+}

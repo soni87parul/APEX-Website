@@ -65,11 +65,17 @@ export type CapabilityGroup = {
   status: Status;
   objective: ObjectiveId;
   cta: string;
+  /** Illustrative thumbnail from the register, with truthful alt text. */
+  image?: { id: string; alt: string };
 };
 
 export const capabilityGroups: CapabilityGroup[] = [
   {
     id: 'access',
+    image: {
+      id: 'laboratory-interior-concept',
+      alt: 'Illustrative laboratory interior used to suggest shared research space',
+    },
     no: '01',
     title: 'Access shared labs',
     summary: 'Research space and equipment without building your own facility first.',
@@ -80,6 +86,10 @@ export const capabilityGroups: CapabilityGroup[] = [
   },
   {
     id: 'develop',
+    image: {
+      id: 'process-development-concept',
+      alt: 'Illustrative scientist at laboratory process equipment',
+    },
     no: '02',
     title: 'Contract R&D and development',
     summary: 'Scoped research, then a documented, repeatable process and prototype.',
@@ -90,6 +100,10 @@ export const capabilityGroups: CapabilityGroup[] = [
   },
   {
     id: 'scale',
+    image: {
+      id: 'pilot-operations-concept',
+      alt: 'Illustrative operator at pilot-scale processing equipment',
+    },
     no: '03',
     title: 'Pilot and scale readiness',
     summary: 'Samples and scale data, and a credible plan towards manufacturing in India.',
@@ -101,6 +115,10 @@ export const capabilityGroups: CapabilityGroup[] = [
   },
   {
     id: 'india',
+    image: {
+      id: 'corporate-meeting-concept',
+      alt: 'Illustrative business meeting used to suggest partnership discussions',
+    },
     no: '04',
     title: 'India entry and regulatory orientation',
     summary: 'Localisation, sourcing, partners and the FSSAI novel-food route.',
@@ -112,6 +130,10 @@ export const capabilityGroups: CapabilityGroup[] = [
   },
   {
     id: 'learn',
+    image: {
+      id: 'scientist-microscope-concept',
+      alt: 'Illustrative researcher at a microscope used to suggest training',
+    },
     no: '05',
     title: 'Training and collaboration',
     summary: 'Hands-on training, joint research and knowledge exchange.',

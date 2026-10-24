@@ -1,5 +1,6 @@
 import { ArrowRight, FileText } from 'lucide-react';
 import { eventsPage, heroCampaigns, statusText } from '../../content/events';
+import { ConceptTag } from './ConceptTag';
 import { EventImage } from './EventImage';
 
 /**
@@ -25,6 +26,7 @@ export function FeaturedHero() {
   return (
     <section className="ev-hero" aria-labelledby="events-title">
       <EventImage image={c.image} sizes="100vw" priority className="ev-hero__media" />
+      <ConceptTag image={c.image} className="ev-hero__tag" />
       <div className="wrap ev-hero__content">
         <p className="ev-hero__meta">
           <span className="ev-hero__status">{statusText[c.status]}</span>

@@ -19,6 +19,11 @@ export type ResponsiveImage = {
   /** CSS object-position, set per campaign in the admin (desktop and mobile). */
   focal?: { desktop: string; mobile: string };
   placeholder?: boolean;
+  /**
+   * AI-generated concept used as a temporary layout image. Rendered with a visible "Concept image · not an APEX
+   * event" label. Never allowed in the gallery, which takes genuine event photographs only.
+   */
+  concept?: boolean;
 };
 
 export type HeroCampaign = {
@@ -75,6 +80,16 @@ export type MediaItem = {
   sample?: boolean;
 };
 
+/** Concept image from the APEX Visual Asset Repository (see src/content/images.ts). */
+const concept = (id: string, alt: string): ResponsiveImage => ({
+  src: `/images/apex/${id}`,
+  widths: [324],
+  width: 324,
+  height: 180,
+  alt,
+  concept: true,
+});
+
 const ph = (id: string, width: number, height: number, alt: string): ResponsiveImage => ({
   src: `/images/placeholders/${id}`,
   widths: [Math.round(width / 2), width],
@@ -92,7 +107,14 @@ export const heroCampaigns: HeroCampaign[] = [
     eyebrow: 'Featured event',
     headline: 'APEX flagship event',
     body: 'The featured event, its dates, venue and registration link are set in the admin. Before the event this button opens registration; afterwards it can point to the event report.',
-    image: ph('event-banner', 1920, 900, 'Placeholder banner for the featured APEX event'),
+    // Temporary concept image; replaced by an admin-uploaded, approved event poster or photo.
+    image: {
+      ...concept(
+        'conference-stage-concept',
+        'Illustrative conference stage and audience, not an APEX event',
+      ),
+      focal: { desktop: '50% 40%', mobile: '60% 50%' },
+    },
     cta: null,
   },
 ];
@@ -103,7 +125,7 @@ export const promo: PromoBlock = {
   headline: 'Speaker reveals, registration openings and announcements',
   text: 'A quiet strip for what is coming next. It is edited separately from the featured event and can be hidden.',
   cta: null,
-  image: ph('promo', 1200, 800, 'Placeholder image for the next APEX announcement'),
+  image: concept('panel-discussion-concept', 'Illustrative panel discussion, not an APEX event'),
 };
 
 const galleryShapes: [number, number][] = [
@@ -125,7 +147,10 @@ const galleryItems = (from: number, count: number): GalleryItem[] =>
     };
   });
 
-/** Genuine event photographs only, uploaded after each event. Empty until the first real album exists. */
+/**
+ * Genuine event photographs only, uploaded after each event. Empty until the first real album exists.
+ * Concept images (`concept: true`) must never be added here.
+ */
 export const albums: GalleryAlbum[] = [];
 
 /**
@@ -186,3 +211,9 @@ export const statusText: Record<EventStatus, string> = {
   completed: 'Completed',
   report_available: 'Report available',
 };
+
+/** Homepage events teaser image. Temporary concept until a genuine event photo is approved. */
+export const eventsPreviewImage: ResponsiveImage = concept(
+  'conference-audience-concept',
+  'Illustrative conference audience, not an APEX event',
+);
