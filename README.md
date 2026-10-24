@@ -126,3 +126,25 @@ Production deployment will occur only after design, content and functional appro
 ## Project Status
 
 Initial development and design implementation.
+
+## Local development
+
+Requires Node 20 or later.
+
+```bash
+npm install
+npm run dev          # http://localhost:5173 (add ?review to outline claims awaiting approval)
+npm run build        # type-check and build to dist/
+npm run preview      # serve the build
+npm run lint
+npm run test:e2e     # Playwright; set CHROMIUM_PATH to use an installed Chromium
+npm run images       # regenerate optimised images from assets-src/
+npm run screenshots  # full-page screenshots into docs/screenshots/ (after a build)
+```
+
+- Copy and data: `src/content/` (edit here, not in components)
+- Styles: `src/styles/tokens.css` (palette, type, spacing) and `src/styles/global.css`
+- Sections: `src/components/sections/`; infographics: `src/components/graphics/`
+- The enquiry form sends nothing until `VITE_ENQUIRY_ENDPOINT` is set (see `docs/DEPLOYMENT.md`)
+
+Project documents: `docs/AUDIT_AND_PLAN.md`, `docs/CONTENT_CLAIMS.md`, `docs/COPY_DECISIONS.md`, `docs/SEO_PLAN.md`, `docs/ASSET_CREDITS.md`, `docs/QA_CHECKLIST.md`, `docs/DEPLOYMENT.md`, image manifest at `src/content/image-manifest.json`.

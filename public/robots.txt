@@ -1,0 +1,5 @@
+# Staging builds should be blocked at the server (see docs/DEPLOYMENT.md). This file is for production.
+User-agent: *
+Allow: /
+
+Sitemap: https://apex.clearmeat.org/sitemap.xml
